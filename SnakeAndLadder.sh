@@ -4,19 +4,20 @@ echo Welcome To Snake And Ladder Simulation
 
 #CONSTANTS
 START_POSITION=0
+WINNING_POSITION=100
 NO_PLAY=0
 LADDER=1
 SNAKE=2
-WINNING_POSITION=100
+PLAYER_1=1
+PLAYER_2=2
 
 #VARIABLES
-position=$START_POSITION
+player1Position=$START_POSITION
+player2Position=$START_POSITION
+player=$PLAYER_1
 
-#PERFORMING VARIOUS ACTIONS TILL THE PLAYER REACHES WINNING POSITION
-while [ $position -lt $WINNING_POSITION ]
-do
-	#STORING NO OF TIMES DICE WAS PLAYED
-	((numberOfDieRolls++))
+function snakeLadder(){
+	local position=$1
 	dieRoll=$((RANDOM%6+1))
 	action=$((RANDOM%3))
 	#CHECKING FOR ACTION TO BE PERFORMED AND PERFORMING IT
@@ -41,6 +42,28 @@ do
 			fi
 			;;
 	esac
-	#STORING POSITION AFTER EVERY DIE ROLL IN ARRAY
-	positionArray[$numberOfDieRolls]=$position
+	echo $position
+}
+
+while [ $player1Position -ne $WINNING_POSITION -a $player2Position -ne $WINNING_POSITION ]
+do
+	if [ $player -eq $PLAYER_1 ]
+	then
+		((numberOfDieRollsForPlayer1++))
+		player1Position=$(snakeLadder $player1Position)
+		player1PositionArray[$numberOfDieRollsForPlayer1]=$player1Position
+		player=$PLAYER_2
+	else
+		((numberOfDieRollsForPlayer2++))
+		player2Position=$(snakeLadder $player2Position)
+		player2PositionArray[$numberOfDieRollsForPlayer2]=$player2Position
+		player=$PLAYER_1
+	fi
 done
+
+if [ $player1Position -eq $WINNING_POSITION ]
+then
+	winner="player "$PLAYER_1
+else
+	winner="player "$PLAYER_2
+fi
