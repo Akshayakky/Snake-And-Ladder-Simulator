@@ -12,19 +12,25 @@ WINNING_POSITION=100
 #VARIABLES
 position=$START_POSITION
 
+#PERFORMING VARIOUS ACTIONS TILL THE PLAYER REACHES WINNING POSITION
 while [ $position -lt $WINNING_POSITION ]
 do
 	dieRoll=$((RANDOM%6+1))
 	action=$((RANDOM%3))
 	#CHECKING FOR ACTION TO BE PERFORMED AND PERFORMING IT
-	case $action in 
+	case $action in
 		$NO_PLAY)
 			position=$position
 			;;
 		$LADDER)
-			position=$(($position+$dieRoll))
+			#IF STATEMENT TO ENSURE POSITION NEVER BECOMES GREATER THAN WINNING POSITION
+			if [ $(($position+$dieRoll)) -le 100 ]
+			then
+				position=$(($position+$dieRoll))
+			fi
 			;;
 		$SNAKE)
+			#IF STATEMENT TO ENSURE POSITION NEVER BECOMES NEGATIVE
 			if [ $(($position-$dieRoll)) -lt $START_POSITION ]
 			then
 				position=$START_POSITION
