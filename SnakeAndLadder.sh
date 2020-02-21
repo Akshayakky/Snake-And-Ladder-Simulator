@@ -15,6 +15,8 @@ position=$START_POSITION
 #PERFORMING VARIOUS ACTIONS TILL THE PLAYER REACHES WINNING POSITION
 while [ $position -lt $WINNING_POSITION ]
 do
+	#STORING NO OF TIMES DICE WAS PLAYED
+	((numberOfDieRolls++))
 	dieRoll=$((RANDOM%6+1))
 	action=$((RANDOM%3))
 	#CHECKING FOR ACTION TO BE PERFORMED AND PERFORMING IT
@@ -24,7 +26,7 @@ do
 			;;
 		$LADDER)
 			#IF STATEMENT TO ENSURE POSITION NEVER BECOMES GREATER THAN WINNING POSITION
-			if [ $(($position+$dieRoll)) -le 100 ]
+			if [ $(($position+$dieRoll)) -le $WINNING_POSITION ]
 			then
 				position=$(($position+$dieRoll))
 			fi
@@ -39,4 +41,6 @@ do
 			fi
 			;;
 	esac
+	#STORING POSITION AFTER EVERY DIE ROLL IN ARRAY
+	positionArray[$numberOfDieRolls]=$position
 done
