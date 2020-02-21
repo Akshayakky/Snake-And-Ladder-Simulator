@@ -7,21 +7,30 @@ START_POSITION=0
 NO_PLAY=0
 LADDER=1
 SNAKE=2
+WINNING_POSITION=100
 
 #VARIABLES
-dieRoll=$((RANDOM%6+1))
-action=$((RANDOM%3))
-pos=$START_POSITION
+position=$START_POSITION
 
-#CHECKING FOR ACTION TO BE PERFORMED AND PERFORMING IT
-case $action in 
-	$NO_PLAY)
-		pos=$pos
-		;;
-	$LADDER)
-		pos=$(($pos+$dieRoll))
-		;;
-	$SNAKE)
-		pos=$(($pos-$dieRoll))
-		;;
-esac
+while [ $position -lt $WINNING_POSITION ]
+do
+	dieRoll=$((RANDOM%6+1))
+	action=$((RANDOM%3))
+	#CHECKING FOR ACTION TO BE PERFORMED AND PERFORMING IT
+	case $action in 
+		$NO_PLAY)
+			position=$position
+			;;
+		$LADDER)
+			position=$(($position+$dieRoll))
+			;;
+		$SNAKE)
+			if [ $(($position-$dieRoll)) -lt $START_POSITION ]
+			then
+				position=$START_POSITION
+			else
+				position=$(($position-$dieRoll))
+			fi
+			;;
+	esac
+done
