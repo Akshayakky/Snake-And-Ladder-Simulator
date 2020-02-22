@@ -16,6 +16,7 @@ player1Position=$START_POSITION
 player2Position=$START_POSITION
 player=$PLAYER_1
 
+#FUNCTION TO SIMULATE DIE ROLL AND RETURN POSITION AFTER EVERY DIE ROLL
 function snakeLadder(){
 	local position=$1
 	dieRoll=$((RANDOM%6+1))
@@ -45,6 +46,7 @@ function snakeLadder(){
 	echo $position
 }
 
+#USING WHILE LOOP TO CHANGE PLAYER AFTER EVERY DIE ROLL AND CALL FUNCTION SNAKELADDER
 while [ $player1Position -ne $WINNING_POSITION -a $player2Position -ne $WINNING_POSITION ]
 do
 	if [ $player -eq $PLAYER_1 ]
@@ -61,6 +63,7 @@ do
 	fi
 done
 
+#STORING THE WINNER IN A VARIABLE
 if [ $player1Position -eq $WINNING_POSITION ]
 then
 	winner="player "$PLAYER_1
